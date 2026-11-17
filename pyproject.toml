@@ -1,0 +1,91 @@
+[project]
+name = "kpi_automation_mcp_server"
+version = "0.1.0"
+description = "KPI Automation MCP Server."
+license = "MIT"
+license-files = ["LICENSE"]
+
+authors = [
+    { name = "José Ismael Salas Morales", email = "jose.salas.ibt@gmail.com" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "alembic>=1.20.1",
+    "fastmcp>=4.2.0",
+    "pandas>=3.1.1",
+    "psycopg[binary]>=3.2",
+    "seaborn>=0.13.2",
+    "matplotlib>=3.11.2",
+    "pydantic>=2.14.3",
+    "pydantic-settings>=2.16.3",
+    "sqlalchemy>=2.1.8",
+]
+
+[project.scripts]
+kpi_automation_mcp_server = "kpi_automation_mcp_server.main:main"
+kpi_automation_mcp_server-load = "kpi_automation_mcp_server.etl.load_siap:main"
+
+[dependency-groups]
+lint = [
+    "mypy>=2.4.1",
+    "pandas-stubs>=3.1.0.261029",
+    "pre-commit>=4.7.0",
+    "ruff>=0.17.5",
+]
+
+test = [
+    "pytest>=9.2.0",
+    "pytest-cov>=7.1.0",
+]
+
+dev = [
+    {include-group = "test"},
+    {include-group = "lint"}
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/kpi_automation_mcp_server"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+
+[tool.coverage.run]
+source = ["kpi_automation_mcp_server"]
+branch = true
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+exclude = ["alembic"]
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+    "ARG", # unused arguments in functions
+    "T201",   # print statements are not allowed
+]
+ignore = [
+    "E501",  # line too long
+    "W191",  # indentation contains tabs
+]
+
+[tool.mypy]
+strict = true
+plugins = ["pydantic.mypy"]
+exclude = ["venv", ".venv", "alembic"]
+
+[[tool.mypy.overrides]]
+module = ["seaborn.*"]
+ignore_missing_imports = true
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
