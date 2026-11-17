@@ -1,0 +1,30 @@
+# Secrets
+.env
+.env.*
+
+# Environment / VCS / editor
+.venv
+.git
+.gitignore
+.github
+.vscode
+
+# Python caches
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+**/.ruff_cache
+**/.mypy_cache
+**/*.egg-info
+.coverage
+htmlcov
+
+# OS
+**/.DS_Store
+
+# Not needed in the image
+docker-compose*.yaml
+Dockerfile
+data
+tests
+README.md
