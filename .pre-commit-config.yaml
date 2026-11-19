@@ -1,0 +1,37 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-added-large-files
+        args: ['--maxkb=2000']
+      - id: check-merge-conflict
+      - id: debug-statements
+
+  # Lints GitHub Actions workflows (.github/workflows/*.yml)
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.12
+    hooks:
+      - id: actionlint
+
+  # Delegates to Makefile targets. Runs on src/ + tests/ if any .py is staged.
+  - repo: local
+    hooks:
+      - id: ruff
+        name: ruff (lint --fix + format)
+        entry: make format
+        language: system
+        types_or: [python, pyi]
+        pass_filenames: false
+        require_serial: true
+
+      - id: mypy
+        name: mypy (strict)
+        entry: make type-check
+        language: system
+        types_or: [python, pyi]
+        pass_filenames: false
+        require_serial: true
