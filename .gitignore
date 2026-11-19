@@ -16,6 +16,9 @@ data/
 .env.*
 !.env.example
 
+# Docs build output
+site/
+
 # IDEs
 .vscode/
 
